@@ -1,6 +1,5 @@
 {
   "version": 1,
-  "seed": 2776550538,
   "timeEvents": [
     {
       "name": "tilesStart",
@@ -22,5 +21,6 @@
       "name": "dataDeselect",
       "targetTime": 12.237367036620514
     }
-  ]
+  ],
+  "seed": 2776550538
 }

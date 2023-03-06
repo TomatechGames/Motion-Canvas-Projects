@@ -1,11 +1,11 @@
-import { Layout, LayoutProps, Line, Rect, Text } from "@motion-canvas/2d/lib/components";
+import { Layout, LayoutProps, Line, Rect, Txt } from "@motion-canvas/2d/lib/components";
 import { initial, signal, vector2Signal } from "@motion-canvas/2d/lib/decorators";
 import { all } from "@motion-canvas/core/lib/flow";
 import { SignalValue, SimpleSignal, createSignal } from "@motion-canvas/core/lib/signals";
 import { ThreadGenerator } from "@motion-canvas/core/lib/threading";
 import { TimingFunction, easeInOutCubic } from "@motion-canvas/core/lib/tweening";
 import { PossibleVector2, Vector2Signal } from "@motion-canvas/core/lib/types";
-import { createRef, makeRef, makeRefs } from "@motion-canvas/core/lib/utils";
+import { createRef, makeRef } from "@motion-canvas/core/lib/utils";
 
 
 export interface SequenceDiagramProps extends LayoutProps {
@@ -52,7 +52,7 @@ export class SequenceDiagram extends Layout {
             this.columnContainer().add(
                 <Layout direction={'column'} alignItems={'center'} ref={makeRef(this.columnLayouts, i)}>
                     <Rect width={this.headerSize.x} height={this.headerSize.y} fill={'#ccc'} radius={20}>
-                        <Text text={()=>this.columns[i]()} fill={'#111'} grow={1} justifyContent={'center'} alignItems={'center'}/>
+                        <Txt text={()=>this.columns[i]()} fill={'#111'} grow={1} justifyContent={'center'} alignItems={'center'}/>
                     </Rect>
                     <Rect width={10} grow={1} fill={'#777'} radius={[0,0,5,5]}/>
                 </Layout>
@@ -60,10 +60,10 @@ export class SequenceDiagram extends Layout {
         }
     }
 
-    public addArrow(fromCol:number, toCol:number):{arrowRef:Line, textRef:Text, showArrow:(duration?:number, timing?:TimingFunction)=>ThreadGenerator} {
+    public addArrow(fromCol:number, toCol:number):{arrowRef:Line, textRef:Txt, showArrow:(duration?:number, timing?:TimingFunction)=>ThreadGenerator} {
         if(fromCol<0||fromCol>=this.columns.length || toCol<0||toCol>=this.columns.length)
             return;
-        let refs = {} as {arrowRef:Line, textRef:Text, showArrow:(duration:number, timing:TimingFunction)=>ThreadGenerator};
+        let refs = {} as {arrowRef:Line, textRef:Txt, showArrow:(duration:number, timing:TimingFunction)=>ThreadGenerator};
 
         const arrowPaddingScale = toCol<fromCol ? -1:1;
         const arrowPadding = 5*arrowPaddingScale;

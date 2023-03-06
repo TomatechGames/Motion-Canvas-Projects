@@ -1,4 +1,4 @@
-import { Circle, Layout, LayoutProps, Text, Video } from "@motion-canvas/2d/lib/components";
+import { Circle, Layout, LayoutProps, Txt, Video } from "@motion-canvas/2d/lib/components";
 import { delay, noop, waitFor } from "@motion-canvas/core/lib/flow";
 import { easeInCubic, easeInOutCubic } from "@motion-canvas/core/lib/tweening";
 import { Vector2 } from "@motion-canvas/core/lib/types";
@@ -14,7 +14,7 @@ export class IntroComponent extends Layout {
 
     private readonly circleRef = createRef<Circle>();
     private readonly vidRef = createRef<Video>();
-    private readonly textRef = createRef<Text>();
+    private readonly textRef = createRef<Txt>();
 
     constructor(props?:IntroComponentProps) {
         super({
@@ -28,7 +28,7 @@ export class IntroComponent extends Layout {
             <>
                 <Circle ref={this.circleRef} size={()=>Math.sqrt((this.size.x()*this.size.x())+(this.size.y()*this.size.y()))+5} fill={'#141414'}/>
                 <Video ref={this.vidRef} src={miniIntro} scale={0.25}>
-                    <Text ref={this.textRef} text={'Tomatech'} opacity={0} fontFamily={'MARIO MAKER'} offset={[-1,1]} scale={10} fontSize={96} position={()=>this.vidRef().size().scale(0.5).add(new Vector2(0,-180))} fill={'#800'}/>
+                    <Txt ref={this.textRef} text={'Tomatech'} opacity={0} fontFamily={'MARIO MAKER'} offset={[-1,1]} scale={10} fontSize={96} position={()=>this.vidRef().size().scale(0.5).add(new Vector2(0,-180))} fill={'#800'}/>
                 </Video>
             </>
         );

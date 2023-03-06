@@ -1,6 +1,6 @@
 import { makeScene2D } from '@motion-canvas/2d/lib/scenes';
 import { all, waitFor, waitUntil } from '@motion-canvas/core/lib/flow';
-import { Circle, ComponentChildren, Image, Layout, Line, Rect } from '@motion-canvas/2d/lib/components';
+import { Circle, ComponentChildren, Img, Layout, Line, Rect } from '@motion-canvas/2d/lib/components';
 import { CodeBlock, edit, insert, lines } from '@motion-canvas/2d/lib/components/CodeBlock';
 import { createRef, makeRef, makeRefs } from '@motion-canvas/core/lib/utils';
 import { SignalValue, createSignal } from '@motion-canvas/core/lib/signals';
@@ -17,20 +17,20 @@ import smbBrickImg from '../images/smbBrick.png';
 
 export default makeScene2D(function* (view) {
   // Create your animations here
-  yield* slideTransition(Direction.Left);
+  //yield* slideTransition(Direction.Left);
 
   const panelWidth = createSignal(1536);
   const panelHeight = createSignal(864);
   const lineWidth = createSignal(4);
   const lineColour = createSignal('#C0C0C07F');
 
-  const bgImage = createRef<Image>();
+  const bgImg = createRef<Img>();
   const lineParent = createRef<Layout>();
   const imagesParent = createRef<Layout>();
 
-  view.add(<Image
+  view.add(<Img
     src={smbBgImg}
-    ref={bgImage}
+    ref={bgImg}
     width={panelWidth()}
     height={panelHeight()}
     smoothing={false}
@@ -43,7 +43,7 @@ export default makeScene2D(function* (view) {
     >
       <Layout ref={lineParent}/>
       <Layout ref={imagesParent}/>
-    </Image>
+    </Img>
   );
 
   const gridX: Line[] = [];
@@ -60,8 +60,8 @@ export default makeScene2D(function* (view) {
     lineParent().add(<Line points={[new Vector2((-panelWidth()+lineWidth())/2, (-x*64)-16), new Vector2((panelWidth()-lineWidth())/2, (-x*64)-16)]} ref={makeRef(gridY, (x*2))} lineWidth={lineWidth()} stroke={lineColour} start={0.5} end={0.5}/>);
   }
 
-  yield bgImage().scale(1, 0.4, easeOutBack);
-  yield bgImage().opacity(1, 0.4, easeOutBack);
+  yield bgImg().scale(1, 0.4, easeOutBack);
+  yield bgImg().opacity(1, 0.4, easeOutBack);
   yield* waitFor(0.1);
 
   yield* all(
@@ -71,26 +71,26 @@ export default makeScene2D(function* (view) {
 
   const gridStart = createSignal(()=>new Vector2(-(panelWidth()-64)/2, (panelHeight()-64)/2));
 
-  const levelTiles: Image[][] = [];
+  const levelTiles: Img[][] = [];
   for (let y = 0; y < 3; y++) {
     levelTiles[y] = [];
     for (let x = 0; x < 24; x++) {
       if(y==2 && x>6 && x<17)
         continue;
       imagesParent().add(
-        <Image src={smbTerrainImg} width={64} height={64} ref={makeRef(levelTiles[y],x)} position={gridStart().add(new Vector2(x,-y).scale(64))} smoothing={false} scale={0}/>
+        <Img src={smbTerrainImg} width={64} height={64} ref={makeRef(levelTiles[y],x)} position={gridStart().add(new Vector2(x,-y).scale(64))} smoothing={false} scale={0}/>
       );
     }
   }
   levelTiles[6] = [];
   for (let i = 2; i < 5; i++) {
     imagesParent().add(
-      <Image src={smbBrickImg} width={64} height={64} ref={makeRef(levelTiles[6],i)} position={gridStart().add(new Vector2(i,-6).scale(64))} smoothing={false} scale={0}/>
+      <Img src={smbBrickImg} width={64} height={64} ref={makeRef(levelTiles[6],i)} position={gridStart().add(new Vector2(i,-6).scale(64))} smoothing={false} scale={0}/>
     );
   }
 
   yield* waitUntil("tilesStart");
-  //yield bgImage().position.y(-96, 3, easeInOutCubic);
+  //yield bgImg().position.y(-96, 3, easeInOutCubic);
   
   const imagesGrowTime = 0.3;
   const imagesInterval = 0.02;
@@ -98,7 +98,7 @@ export default makeScene2D(function* (view) {
   let lastGenerator;
   for (const levelTilesRow of levelTiles) {
     if(levelTilesRow!=null)
-      lastGenerator = yield growImages(levelTilesRow, imagesGrowTime, easeOutCubic, imagesInterval);
+      lastGenerator = yield growImgs(levelTilesRow, imagesGrowTime, easeOutCubic, imagesInterval);
     yield* waitFor(rowInterval);
   }
   yield* join(lastGenerator);
@@ -117,7 +117,7 @@ export default makeScene2D(function* (view) {
   "id":0
 }`;
 
-  yield bgImage().add(
+  yield bgImg().add(
     <TileInfoBubble targetPos={targetPosSignal} boxPos={[0,-16+(64*1)]} refs={tileInfoBubble}>
       <CodeBlock ref={codeRef} language='json' code={start}/>
     </TileInfoBubble>
@@ -191,11 +191,11 @@ function TileInfoBubble({targetPos, boxPos=new Vector2(0,0), children, refs}:{ta
 }
 
 
-function* growImages(gridImages:Image[], growTime:number, growFunc:TimingFunction, growInterval:number)
+function* growImgs(gridImgs:Img[], growTime:number, growFunc:TimingFunction, growInterval:number)
 {
-  for (const levelImage of gridImages) {
-    if(levelImage!=null)
-      yield levelImage.scale(1, growTime, easeOutCubic);
+  for (const levelImg of gridImgs) {
+    if(levelImg!=null)
+      yield levelImg.scale(1, growTime, easeOutCubic);
 
     yield* waitFor(growInterval);
   }
