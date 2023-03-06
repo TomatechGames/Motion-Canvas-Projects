@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "seed": 2776550538,
+  "timeEvents": [
+    {
+      "name": "tilesStart",
+      "targetTime": 2.5639057458683716
+    },
+    {
+      "name": "createTileInfo",
+      "targetTime": 5.627039729525494
+    },
+    {
+      "name": "moveTileInfo",
+      "targetTime": 7.839555402912267
+    },
+    {
+      "name": "data",
+      "targetTime": 9.952441607099395
+    },
+    {
+      "name": "dataDeselect",
+      "targetTime": 12.237367036620514
+    }
+  ]
+}
