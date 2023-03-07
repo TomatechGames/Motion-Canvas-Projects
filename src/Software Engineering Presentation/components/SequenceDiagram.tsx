@@ -1,5 +1,5 @@
 import { Layout, LayoutProps, Line, Rect, Txt } from "@motion-canvas/2d/lib/components";
-import { initial, signal, vector2Signal } from "@motion-canvas/2d/lib/decorators";
+import { initial, vector2Signal } from "@motion-canvas/2d/lib/decorators";
 import { all } from "@motion-canvas/core/lib/flow";
 import { SignalValue, SimpleSignal, createSignal } from "@motion-canvas/core/lib/signals";
 import { ThreadGenerator } from "@motion-canvas/core/lib/threading";
@@ -19,23 +19,22 @@ export class SequenceDiagram extends Layout {
     @vector2Signal('headerSize')
     public declare readonly headerSize: Vector2Signal<this>;
 
-    @initial(["One", "Two", "Three"])
-    @signal()
     public declare readonly columns: SimpleSignal<string, this>[];
 
     private columnLayouts : Layout[];
     private readonly columnContainer = createRef<Layout>();
     private readonly rowContainer = createRef<Layout>();
 
-    constructor(props?:SequenceDiagramProps) {
+    constructor({columns, ...props}:SequenceDiagramProps) {
         super({
             ...props
         });
 
 
         this.columns=[];
-        for (let i = 0; i < props.columns.length; i++) {
-            this.columns[i]=createSignal(props.columns[i]);
+        if(columns)
+        for (let i = 0; i < columns.length; i++) {
+            this.columns[i]=createSignal(columns[i]);
         }
 
         this.add(
@@ -52,7 +51,7 @@ export class SequenceDiagram extends Layout {
             this.columnContainer().add(
                 <Layout direction={'column'} alignItems={'center'} ref={makeRef(this.columnLayouts, i)}>
                     <Rect width={this.headerSize.x} height={this.headerSize.y} fill={'#ccc'} radius={20}>
-                        <Txt text={()=>this.columns[i]()} fill={'#111'} grow={1} justifyContent={'center'} alignItems={'center'}/>
+                        <Txt text={this.columns[i]} fill={'#111'} grow={1} justifyContent={'center'} alignItems={'center'}/>
                     </Rect>
                     <Rect width={10} grow={1} fill={'#777'} radius={[0,0,5,5]}/>
                 </Layout>

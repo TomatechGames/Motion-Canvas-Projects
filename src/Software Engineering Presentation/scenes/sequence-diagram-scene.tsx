@@ -16,7 +16,7 @@ export default makeScene2D(function* (view) {
       <IntroComponent ref={introRef}/>
     </>
   );
-
+  seqRef().save();
   yield* introRef().begin();
   yield* waitFor(1.5);
 
@@ -28,6 +28,7 @@ export default makeScene2D(function* (view) {
 
   const thirdArrow = seqRef().addArrow(3, 0);
   yield* thirdArrow.showArrow();
+  
 
   yield* seqRef().size.y(900,1);
   yield* seqRef().columns[1]("Unity", 1);
@@ -39,9 +40,7 @@ export default makeScene2D(function* (view) {
     firstArrow.arrowRef.opacity(0,1),
     secondArrow.arrowRef.opacity(0,1),
     thirdArrow.arrowRef.opacity(0,1),
-    seqRef().size.y(700,1),
-    seqRef().columns[1]("System", 1),
-    seqRef().headerSize([300,75],1)
+    seqRef().restore(1)
   );
 
   yield* waitFor(1);
