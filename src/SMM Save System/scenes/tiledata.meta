@@ -3,23 +3,23 @@
   "timeEvents": [
     {
       "name": "tilesStart",
-      "targetTime": 2.5639057458683716
+      "targetTime": 6.029818047445649
     },
     {
       "name": "createTileInfo",
-      "targetTime": 5.627039729525494
+      "targetTime": 7.260494823322336
     },
     {
       "name": "moveTileInfo",
-      "targetTime": 7.839555402912267
+      "targetTime": 9.006222069578934
     },
     {
       "name": "data",
-      "targetTime": 9.952441607099395
+      "targetTime": 11.119108273766061
     },
     {
       "name": "dataDeselect",
-      "targetTime": 12.237367036620514
+      "targetTime": 13.40403370328718
     }
   ],
   "seed": 2776550538

@@ -9,6 +9,7 @@ import { TimingFunction, easeInOutCubic, easeOutBack, easeOutCubic } from '@moti
 import { slideTransition } from "@motion-canvas/core/lib/transitions";
 import { join } from '@motion-canvas/core/lib/threading';
 import { language } from 'code-fns';
+import { IntroComponent } from '../../shared/components/IntroComponent';
 const json = language.json;
 
 import smbBgImg from '../images/smbBgImg.png';
@@ -27,24 +28,32 @@ export default makeScene2D(function* (view) {
   const bgImg = createRef<Img>();
   const lineParent = createRef<Layout>();
   const imagesParent = createRef<Layout>();
+  const introRef = createRef<IntroComponent>();
 
-  view.add(<Img
-    src={smbBgImg}
-    ref={bgImg}
-    width={panelWidth()}
-    height={panelHeight()}
-    smoothing={false}
-    radius={16}
-    shadowOffset={10}
-    shadowColor={'#050505'}
-    scale={0.7}
-    opacity={0}
-    clip
+  yield view.add(
+  <>
+    <Img
+      src={smbBgImg}
+      ref={bgImg}
+      width={panelWidth()}
+      height={panelHeight()}
+      smoothing={false}
+      radius={16}
+      shadowOffset={10}
+      shadowColor={'#050505'}
+      scale={0.7}
+      opacity={0}
+      clip
     >
       <Layout ref={lineParent}/>
       <Layout ref={imagesParent}/>
     </Img>
+    <IntroComponent ref={introRef}/>
+  </>
   );
+
+  yield* introRef().begin();
+  yield* waitFor(1.5);
 
   const gridX: Line[] = [];
   lineParent().add(<Line points={[new Vector2(0, (-panelHeight()+lineWidth())/2), new Vector2(0, (panelHeight()-lineWidth())/2)]} ref={makeRef(gridX, 0)} lineWidth={lineWidth()} stroke={lineColour} start={0.5} end={0.5}/>);
