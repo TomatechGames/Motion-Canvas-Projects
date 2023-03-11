@@ -1,0 +1,4 @@
+@font-face {
+    font-family: 'Super Mario Maker';
+    src: local('Super Mario Maker'), url(fonts/MARIOMAKER.otf) format('opentype');
+}
