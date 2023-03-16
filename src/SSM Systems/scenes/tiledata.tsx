@@ -220,12 +220,9 @@ function* growLines(gridLines:Line[], growTime:number, growFunc:TimingFunction, 
   yield* waitFor(growInterval);
 
   for (let i = 1; i <gridLines.length; i+=2) {
-    gridLines[i].lineCap('round');
-    yield gridLines[i].start(0,growTime, growFunc);
+    yield gridLines[i].lineCap('round').start(0,growTime, growFunc);
     yield gridLines[i].end(1,growTime, growFunc);
-
-    gridLines[i+1].lineCap('round');
-    yield gridLines[i+1].start(0,growTime, growFunc);
+    yield gridLines[i+1].lineCap('round').start(0,growTime, growFunc);
     yield gridLines[i+1].end(1,growTime, growFunc);
 
     yield* waitFor(growInterval);
