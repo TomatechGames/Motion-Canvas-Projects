@@ -20,6 +20,14 @@
     {
       "name": "dataDeselect",
       "targetTime": 13.40403370328718
+    },
+    {
+      "name": "summonGoomba",
+      "targetTime": 13.90403370328718
+    },
+    {
+      "name": "insertGoomba",
+      "targetTime": 15.887299664330138
     }
   ],
   "seed": 2776550538

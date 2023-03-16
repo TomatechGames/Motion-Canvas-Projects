@@ -1,11 +1,11 @@
 import { makeScene2D } from '@motion-canvas/2d/lib/scenes';
-import { all, waitFor, waitUntil } from '@motion-canvas/core/lib/flow';
+import { all, sequence, waitFor, waitUntil } from '@motion-canvas/core/lib/flow';
 import { Circle, ComponentChildren, Img, Layout, Line, Rect } from '@motion-canvas/2d/lib/components';
 import { CodeBlock, edit, insert, lines } from '@motion-canvas/2d/lib/components/CodeBlock';
 import { createRef, makeRef, makeRefs } from '@motion-canvas/core/lib/utils';
 import { SignalValue, createSignal } from '@motion-canvas/core/lib/signals';
 import { Direction, PossibleVector2, Vector2 } from '@motion-canvas/core/lib/types';
-import { TimingFunction, easeInOutCubic, easeOutBack, easeOutCubic } from '@motion-canvas/core/lib/tweening';
+import { TimingFunction, easeInCirc, easeInCubic, easeInOutCubic, easeOutBack, easeOutCirc, easeOutCubic } from '@motion-canvas/core/lib/tweening';
 import { slideTransition } from "@motion-canvas/core/lib/transitions";
 import { join } from '@motion-canvas/core/lib/threading';
 import { language } from 'code-fns';
@@ -15,10 +15,11 @@ const json = language.json;
 import smbBgImg from '../images/smbBgImg.png';
 import smbTerrainImg from '../images/smbTerrain.png';
 import smbBrickImg from '../images/smbBrick.png';
+import smbGoombaImg from '../images/smb1Goomba.png';
 
 export default makeScene2D(function* (view) {
   // Create your animations here
-  //yield* slideTransition(Direction.Left);
+  yield* slideTransition(Direction.Left);
 
   const panelWidth = createSignal(1536);
   const panelHeight = createSignal(864);
@@ -98,6 +99,15 @@ export default makeScene2D(function* (view) {
     );
   }
 
+  const goombaRef = createRef<Img>();
+  imagesParent().add(
+    <>
+    <Img src={smbBrickImg} width={64} height={64} ref={makeRef(levelTiles[6],5)} position={gridStart().add(new Vector2(5,-6).scale(64))} smoothing={false} scale={0} zIndex={1}/>
+    <Img src={smbGoombaImg} width={64} height={64} ref={goombaRef} position={gridStart().add(new Vector2(-1,-8).scale(64))} smoothing={false}/>
+    </>
+  );
+  const goombaBlock = levelTiles[6][5];
+
   yield* waitUntil("tilesStart");
   //yield bgImg().position.y(-96, 3, easeInOutCubic);
   
@@ -115,19 +125,20 @@ export default makeScene2D(function* (view) {
 
   let tileInfoBubble = makeRefs<typeof TileInfoBubble>();
   const targetPosSignal = Vector2.createSignal([-9,4]);
+  const boxPosSignal = Vector2.createSignal([0,-16+(64*1)]);
   //const textObject = createRef<Text>();
   //const textFillColor = '#358cd8'
   //const textSig = createSignal('"4_3":<br/>{<br/>  id:0<br/>}');
 
   
   const codeRef = createRef<CodeBlock>();
-  const start =
-`"4_3": {
-  "id":0
-}`;
+  const start =`
+    "4_3": {
+      "id":0
+    }`;
 
   yield bgImg().add(
-    <TileInfoBubble targetPos={targetPosSignal} boxPos={[0,-16+(64*1)]} refs={tileInfoBubble}>
+    <TileInfoBubble targetPos={targetPosSignal} boxPos={boxPosSignal} refs={tileInfoBubble}>
       <CodeBlock ref={codeRef} language='json' code={start}/>
     </TileInfoBubble>
   );
@@ -143,22 +154,48 @@ export default makeScene2D(function* (view) {
 
   yield targetPosSignal([-8,0], 0.5, easeInOutCubic, Vector2.arcLerp);
   
-  yield* codeRef().edit(1,false)
-`${edit('"4_3"','"5_7"')}: {
-  "id":${edit("0","1")}
-}`
+  yield* codeRef().edit(1,false)`
+    ${edit('"4_3"','"5_7"')}: {
+      "id":${edit("0","1")}
+    }`
 
   yield* waitUntil("data");
-  yield* codeRef().edit(1)
-`"5_7": {
-  "id":1${insert(`,
+  yield* codeRef().edit(1)`
+    "5_7": {
+      "id":1${insert(`,
   "data": {
     "wings":false
   }`)}
-}`
+    }`
   yield* waitUntil("dataDeselect");
-  yield* codeRef().selection(lines(0,9999), 0.5)
+  yield* codeRef().selection(lines(0,Infinity), 0.5);
+  
+  yield* waitUntil("summonGoomba");
+  yield* goombaRef().position(gridStart().add(new Vector2(4,-8).scale(64)), 1);
+  yield* waitUntil("insertGoomba");
 
+  yield goombaRef().position(gridStart().add(new Vector2(5,-6).scale(64)), 0.5, easeInCirc, Vector2.arcLerp);
+  yield* waitFor(0.3);
+  yield* goombaBlock.scale(1.3, 0.2, easeInCirc)
+  yield* goombaBlock.scale(1, 0.2, easeOutCirc)
+  
+  yield boxPosSignal([(64*6),-16+(64*0.25)], 0.5)
+  yield targetPosSignal([-7,0], 0.5, easeInOutCubic);
+  yield* codeRef().edit(1)`
+    ${edit('"5_7"','"6_7"')}: {
+      "id":1,
+      "data": {
+        "wings":false${insert(`,
+    "content": {
+      "id":7,
+      "data": {
+        "isBig":false,
+        "wings":false,
+        "brat":false
+      }
+    }`)}
+      }
+    }`
   
   yield* waitFor(1);
 });
@@ -166,7 +203,18 @@ export default makeScene2D(function* (view) {
 
 
 
-function TileInfoBubble({targetPos, boxPos=new Vector2(0,0), children, refs}:{targetPos:SignalValue<PossibleVector2>, boxPos?:SignalValue<PossibleVector2>, children?:ComponentChildren, refs:{lineRef:Line, circleRef:Circle, rectRef:Rect}}) {
+function TileInfoBubble(
+  {targetPos, boxPos=new Vector2(0,0), children, refs}:
+  {
+    targetPos:SignalValue<PossibleVector2>, 
+    boxPos?:SignalValue<PossibleVector2>, 
+    children?:ComponentChildren, 
+    refs:{
+      lineRef:Line, 
+      circleRef:Circle, 
+      rectRef:Rect
+    }
+  }) {
 
   const targetPosSignal = Vector2.createSignal(targetPos);
 
