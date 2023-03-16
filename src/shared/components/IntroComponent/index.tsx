@@ -55,6 +55,25 @@ export class IntroComponent extends Layout {
         yield* waitFor(0.25);
     }
 
+    public skip()
+    {
+        this.vidRef().seek(this.vidRef().getDuration());
+        this.vidRef().play();
+        this.circleRef().scale(0);
+        this.vidRef().opacity(0.5);
+        this.vidRef().scale(0.1);
+        this.textRef().opacity(1);
+        this.vidRef().position(()=>(
+            this.size()
+                .mul(new Vector2(-0.5,0.5))
+                .add(this.vidRef().size()
+                    .mul(new Vector2(0.5,-0.5))
+                    .scale(0.1)
+                )
+            )
+        );
+    }
+
     public *waitForVideoCompletion() {
         while (this.vidRef().completion()<1) {
             yield noop;
