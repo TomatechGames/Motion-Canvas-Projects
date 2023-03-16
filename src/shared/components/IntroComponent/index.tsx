@@ -9,7 +9,7 @@ import '../../fonts.css';
 
 
 export interface IntroComponentProps extends LayoutProps {
-    
+    skipImmediately?:boolean
 }
 
 export class IntroComponent extends Layout {
@@ -34,6 +34,10 @@ export class IntroComponent extends Layout {
                 </Video>
             </>
         );
+
+        if(props.skipImmediately){
+            this.skip();
+        }
     }
 
     public *begin() {
