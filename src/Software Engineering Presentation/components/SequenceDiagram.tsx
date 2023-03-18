@@ -59,7 +59,7 @@ export class SequenceDiagram extends Layout {
         }
     }
 
-    public addArrow(fromCol:number, toCol:number):{arrowRef:Line, textRef:Txt, showArrow:(duration?:number, timing?:TimingFunction)=>ThreadGenerator} {
+    public addArrow(fromCol:number, toCol:number, label?:string):{arrowRef:Line, textRef:Txt, showArrow:(duration?:number, timing?:TimingFunction)=>ThreadGenerator} {
         if(fromCol<0||fromCol>=this.columns.length || toCol<0||toCol>=this.columns.length)
             return;
         let refs = {} as {arrowRef:Line, textRef:Txt, showArrow:(duration:number, timing:TimingFunction)=>ThreadGenerator};
@@ -73,23 +73,23 @@ export class SequenceDiagram extends Layout {
         if (fromCol==toCol) {
             arrowSize=50;
             arrowPoints=[
-                ()=>[arrowPadding+this.columnLayouts[fromCol].position().x,0],
-                ()=>[arrowPadding+this.columnLayouts[fromCol].position().x+(arrowSize),0],
-                ()=>[arrowPadding+this.columnLayouts[toCol].position().x+(arrowSize),arrowSize],
-                ()=>[arrowPadding+this.columnLayouts[toCol].position().x,arrowSize]
+                ()=>[arrowPadding+this.columnLayouts[fromCol].position().x,2],
+                ()=>[arrowPadding+this.columnLayouts[fromCol].position().x+(arrowSize),2],
+                ()=>[arrowPadding+this.columnLayouts[toCol].position().x+(arrowSize),arrowSize+2],
+                ()=>[arrowPadding+this.columnLayouts[toCol].position().x,arrowSize+2]
             ];
         }
         else {
             arrowPoints=[
-                ()=>[this.columnLayouts[fromCol].position().x+arrowPadding,0],
-                ()=>[this.columnLayouts[toCol].position().x-arrowPadding,0]
+                ()=>[this.columnLayouts[fromCol].position().x+arrowPadding,2],
+                ()=>[this.columnLayouts[toCol].position().x-arrowPadding,2]
             ];
         }
 
         this.rowContainer().add(
-            <Layout direction={'column'}>
-                <Layout height={20}/>
-                <Layout paddingTop={4} paddingBottom={4}>
+            <Layout width={'100%'} direction={"column"}>
+            <Rect height={20} width={'100%'} fill={0}/>
+                <Layout paddingTop={10} paddingBottom={10}>
                     <Line layout={false} stroke={'#eee'} ref={makeRef(refs, 'arrowRef')} endArrow={true} end={0} arrowSize={12} lineWidth={8} points={arrowPoints}/>
                 </Layout>
                 <Layout height={arrowSize}/>

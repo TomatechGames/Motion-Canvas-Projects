@@ -1,5 +1,74 @@
 {
   "version": 0,
-  "timeEvents": [],
+  "timeEvents": [
+    {
+      "name": "showHitbox",
+      "targetTime": 2.516853582245476
+    },
+    {
+      "name": "replaceHitbox",
+      "targetTime": 5.160286852887831
+    },
+    {
+      "name": "showTerrain1",
+      "targetTime": 8.216050476358568
+    },
+    {
+      "name": "moveMario1",
+      "targetTime": 10.318278413337453
+    },
+    {
+      "name": "moveMario2",
+      "targetTime": 12.32005431565959
+    },
+    {
+      "name": "hideHitbox",
+      "targetTime": 15.861223158506153
+    },
+    {
+      "name": "showSlope",
+      "targetTime": 19.856379722501316
+    },
+    {
+      "name": "terrainColliders",
+      "targetTime": 22.775709791877492
+    },
+    {
+      "name": "moveMario3",
+      "targetTime": 26.120905718537614
+    },
+    {
+      "name": "moveMario4",
+      "targetTime": 33.177453822826585
+    },
+    {
+      "name": "moveMario5",
+      "targetTime": 35.89723516377349
+    },
+    {
+      "name": "moveMario6",
+      "targetTime": 40.283549952388235
+    },
+    {
+      "name": "demoAngles",
+      "targetTime": 43.413220093303956
+    },
+    {
+      "name": "moveMario7",
+      "targetTime": 50.38090809900816
+    },
+    {
+      "name": "moveMario8",
+      "targetTime": 52.05215205821436
+    },
+    {
+      "name": "moveMario9",
+      "targetTime": 55.45416558394624
+    },
+    {
+      "name": "end",
+      "targetTime": 61.91794734002466
+    }
+  ],
   "seed": 2888058566
 }
