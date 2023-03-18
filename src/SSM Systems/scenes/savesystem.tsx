@@ -196,8 +196,10 @@ export default makeScene2D(function* (view) {
     }`)}
       }
     }`
-  
-  yield* waitFor(1);
+    
+    yield* waitUntil("end");
+    yield* view.opacity(0,0.5)
+    yield* waitFor(0.1);
 });
 
 

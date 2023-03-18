@@ -3,7 +3,7 @@
   "timeEvents": [
     {
       "name": "tilesStart",
-      "targetTime": 6.029818047445649
+      "targetTime": 6.049999999999997
     },
     {
       "name": "createTileInfo",
@@ -28,6 +28,10 @@
     {
       "name": "insertGoomba",
       "targetTime": 15.887299664330138
+    },
+    {
+      "name": "end",
+      "targetTime": 18.17395512464715
     }
   ],
   "seed": 2776550538
