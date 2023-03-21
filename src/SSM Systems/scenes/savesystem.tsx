@@ -31,8 +31,7 @@ export default makeScene2D(function* (view) {
   const imagesParent = createRef<Layout>();
   const introRef = createRef<IntroComponent>();
 
-  yield view.add(
-  <>
+  view.add(
     <Img
       src={smbBgImg}
       ref={bgImg}
@@ -49,8 +48,10 @@ export default makeScene2D(function* (view) {
       <Layout ref={lineParent}/>
       <Layout ref={imagesParent}/>
     </Img>
+  );
+  
+  yield view.add(
     <IntroComponent ref={introRef}/>
-  </>
   );
 
   yield* introRef().begin();
@@ -101,10 +102,10 @@ export default makeScene2D(function* (view) {
 
   const goombaRef = createRef<Img>();
   imagesParent().add(
-    <>
     <Img src={smbBrickImg} width={64} height={64} ref={makeRef(levelTiles[6],5)} position={gridStart().add(new Vector2(5,-6).scale(64))} smoothing={false} scale={0} zIndex={1}/>
+  );
+  imagesParent().add(
     <Img src={smbGoombaImg} width={64} height={64} ref={goombaRef} position={gridStart().add(new Vector2(-1,-8).scale(64))} smoothing={false}/>
-    </>
   );
   const goombaBlock = levelTiles[6][5];
 

@@ -27,12 +27,12 @@ export class IntroComponent extends Layout {
         });
 
         this.add(
-            <>
                 <Circle ref={this.circleRef} size={()=>Math.sqrt((this.size.x()*this.size.x())+(this.size.y()*this.size.y()))+5} fill={'#141414'}/>
+        );
+        this.add(
                 <Video ref={this.vidRef} src={miniIntro} scale={0.25}>
                     <Txt ref={this.textRef} text={'Tomatech'} opacity={0} fontFamily={'Super Mario Maker'} offset={[-1,1]} scale={10} fontSize={96} position={()=>this.vidRef().size().scale(0.5).add(new Vector2(0,80))} fill={'#800'}/>
                 </Video>
-            </>
         );
 
         if(props.skipImmediately){

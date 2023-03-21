@@ -11,10 +11,10 @@ export default makeScene2D(function* (view) {
   const seqRef = createRef<SequenceDiagram>();
   const introRef = createRef<IntroComponent>();
   yield view.add(
-    <>
       <SequenceDiagram height={700} x={-0} ref={seqRef} columns={["Actor", "System", "Dummy", "Fourth"]}/>
+  );
+  yield view.add(
       <IntroComponent ref={introRef}/>
-    </>
   );
   seqRef().save();
   yield* introRef().begin();

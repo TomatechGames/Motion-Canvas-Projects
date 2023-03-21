@@ -21,6 +21,7 @@
     "resolutionScale": 1,
     "colorSpace": "srgb",
     "fileType": "image/png",
-    "quality": 1
+    "quality": 1,
+    "groupByScene": false
   }
 }

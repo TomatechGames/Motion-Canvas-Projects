@@ -10,6 +10,7 @@ import { createSignal } from '@motion-canvas/core/lib/signals';
 import { createRef, makeRef, useDuration, useLogger, useTime } from '@motion-canvas/core/lib/utils';
 import { easeInBack, easeInCirc, easeOutCirc, map } from '@motion-canvas/core/lib/tweening';
 import { PossibleVector2, Vector2 } from '@motion-canvas/core/lib/types';
+import { IntroComponent } from '../../shared/components/IntroComponent';
 
 
 export default makeScene2D(function* (view) {
@@ -23,6 +24,7 @@ export default makeScene2D(function* (view) {
 
   yield loop(Infinity,i=>dashOffset(0,0,(v,f,t)=>v).to(1,1,(v,f,t)=>v));
 
+  const introRef = createRef<IntroComponent>();
   const scaledLayout = createRef<Layout>();
   const blockParent = createRef<Layout>();
   const marioImg = createRef<Img>();
@@ -30,25 +32,29 @@ export default makeScene2D(function* (view) {
   const colliderLines:Line[] = [];
   const castLines:Line[] = [];
 
-  view.add(
-    <Layout scale={16} ref={scaledLayout}>
-      <Layout ref={blockParent}/>
-      <Img src={smbMarioImg} size={10} smoothing={false} scale={0} ref={marioImg}>
-        <Rect size={colliderDist*2} stroke={'#fff'} ref={hitboxRect} lineWidth={0.5} scale={0} lineDash={[1.5,0.5]} lineDashOffset={()=>0.75+dashOffset()*2}/>
+  yield view.add(
+    <>
+      <Layout scale={16} ref={scaledLayout}>
+        <Layout ref={blockParent}/>
+        <Img src={smbMarioImg} size={10} smoothing={false} scale={0} ref={marioImg}>
+          <Rect size={colliderDist*2} stroke={'#fff'} ref={hitboxRect} lineWidth={0.5} scale={0} lineDash={[1.5,0.5]} lineDashOffset={()=>0.75+dashOffset()*2}/>
 
-        <Line points={[()=>[colliderEdgeDist, colliderDist-slopeOffset()-0.01], [0, colliderDist], ()=>[-4, colliderDist-slopeOffset()-0.01]]} stroke={'#0f0'} lineWidth={0.5} start={0.5} end={0.5} ref={makeRef(colliderLines, 0)}/>
-        <Line points={[[-colliderEdgeDist,-colliderDist], [colliderEdgeDist,-colliderDist]]} stroke={'#0f0'} lineWidth={0.5} start={0.5} end={0.5} ref={makeRef(colliderLines, 1)}/>
-        <Line points={[[-colliderDist,-colliderEdgeDist], [-colliderDist,colliderEdgeDist]]} stroke={'#0f0'} lineWidth={0.5} start={0.5} end={0.5} ref={makeRef(colliderLines, 2)}/>
-        <Line points={[[colliderDist,-colliderEdgeDist],  [colliderDist,colliderEdgeDist] ]} stroke={'#0f0'} lineWidth={0.5} start={0.5} end={0.5} ref={makeRef(colliderLines, 3)}/>
+          <Line points={[()=>[colliderEdgeDist, colliderDist-slopeOffset()-0.01], [0, colliderDist], ()=>[-4, colliderDist-slopeOffset()-0.01]]} stroke={'#0f0'} lineWidth={0.5} start={0.5} end={0.5} ref={makeRef(colliderLines, 0)}/>
+          <Line points={[[-colliderEdgeDist,-colliderDist], [colliderEdgeDist,-colliderDist]]} stroke={'#0f0'} lineWidth={0.5} start={0.5} end={0.5} ref={makeRef(colliderLines, 1)}/>
+          <Line points={[[-colliderDist,-colliderEdgeDist], [-colliderDist,colliderEdgeDist]]} stroke={'#0f0'} lineWidth={0.5} start={0.5} end={0.5} ref={makeRef(colliderLines, 2)}/>
+          <Line points={[[colliderDist,-colliderEdgeDist],  [colliderDist,colliderEdgeDist] ]} stroke={'#0f0'} lineWidth={0.5} start={0.5} end={0.5} ref={makeRef(colliderLines, 3)}/>
 
-        <Line points={[[4, -5],  ()=>[5,  5-slopeOffset()]]} stroke={'#777'} end={0} lineWidth={0.5} ref={makeRef(castLines, 0)}/>
-        <Line points={[[0, -5],  ()=>[0,  5-slopeOffset()]]} stroke={'#777'} end={0} lineWidth={0.5} ref={makeRef(castLines, 1)}/>
-        <Line points={[[-4, -5], ()=>[-5, 5-slopeOffset()]]} stroke={'#777'} end={0} lineWidth={0.5} ref={makeRef(castLines, 2)}/>
+          <Line points={[[4, -5],  ()=>[5,  5-slopeOffset()]]} stroke={'#777'} end={0} lineWidth={0.5} ref={makeRef(castLines, 0)}/>
+          <Line points={[[0, -5],  ()=>[0,  5-slopeOffset()]]} stroke={'#777'} end={0} lineWidth={0.5} ref={makeRef(castLines, 1)}/>
+          <Line points={[[-4, -5], ()=>[-5, 5-slopeOffset()]]} stroke={'#777'} end={0} lineWidth={0.5} ref={makeRef(castLines, 2)}/>
 
-      </Img>
-    </Layout>
+        </Img>
+      </Layout>
+      <IntroComponent ref={introRef}/>
+    </>
   );
   
+  yield* introRef().begin();
   yield* marioImg().scale(1,1);
 
   yield* waitUntil("showHitbox");

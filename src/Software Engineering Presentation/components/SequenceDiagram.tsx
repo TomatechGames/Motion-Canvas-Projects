@@ -38,12 +38,12 @@ export class SequenceDiagram extends Layout {
         }
 
         this.add(
-            <>
                 <Layout ref={this.columnContainer} layout={true} height={this.size.y} gap={10}/>
+        );
+        this.add(
                 <Layout ref={this.rowContainer} layout={true} width={this.columnContainer().size.x} offsetY={-1} y={()=>this.size.y()*-0.5} direction={"column"} gap={5}>
-                <Rect height={this.headerSize.y} width={'100%'} opacity={0}/>
+                    <Rect height={this.headerSize.y} width={'100%'} opacity={0}/>
                 </Layout>
-            </>
         );
 
         this.columnLayouts = [];
