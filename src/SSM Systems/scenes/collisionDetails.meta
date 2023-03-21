@@ -1,0 +1,34 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "showTarget",
+      "targetTime": 3.156538206792991
+    },
+    {
+      "name": "castLine",
+      "targetTime": 4.710122147957915
+    },
+    {
+      "name": "castBox",
+      "targetTime": 7.170244295915831
+    },
+    {
+      "name": "moveOrigin",
+      "targetTime": 9.076782502708822
+    },
+    {
+      "name": "removeExamples",
+      "targetTime": 11.768395879021494
+    },
+    {
+      "name": "returnMario",
+      "targetTime": 13.165231995972265
+    },
+    {
+      "name": "end",
+      "targetTime": 28.717554988356405
+    }
+  ],
+  "seed": 1954918359
+}

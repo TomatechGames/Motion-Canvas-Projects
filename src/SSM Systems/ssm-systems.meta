@@ -3,7 +3,7 @@
   "shared": {
     "background": "rgb(20,20,20)",
     "range": [
-      18.77267751562014,
+      18.763389081321904,
       null
     ],
     "size": {
@@ -21,6 +21,7 @@
     "resolutionScale": 1,
     "colorSpace": "srgb",
     "fileType": "image/png",
-    "quality": 1
+    "quality": 1,
+    "groupByScene": true
   }
 }
